@@ -60,14 +60,48 @@ function initGraph() {
 	var innerHtml = '';
 	for(let i=maxNumber;i>=0;i--) {
 		innerHtml+="<tr>";
+		if(i!=0) {
+			innerHtml+="<td id='number_"+i+"' style='width:5px;height:5px;'>"+i+"</td>";
+		}
+		else {
+			innerHtml+="<td id='number_"+i+"' ></td>";
+		}
 		for(let j=0;j<=maxNumber;j++) {
-			var id = i + "_" + j;
-			innerHtml+="<td id='"+id+"' style='width:5px;height:5px;padding:5px;'></td>";
+			var id = j + "_" + i;			
+			innerHtml+="<td id='"+id+"_copy' style='width:5px;height:5px;'></td>";
+			innerHtml+="<td id='"+id+"' style='width:5px;height:5px;'></td>";
 		}
 		innerHtml+="</tr>";
+		innerHtml+="<tr>";
+		innerHtml+="<td style='width:5px;height:5px;'>";
+		if(i!=0) {
+			innerHtml+="<td style='width:5px;height:5px;background-color:black'>";
+		}
+		else {
+			innerHtml+="<td style='width:5px;height:5px;'>";
+		}
+		innerHtml+="</td>";
+		innerHtml+="</tr>";
 	}
+	innerHtml+=numberingXAxis();
 	table.innerHTML = innerHtml;
 	drawGraphLines();
+}
+
+function numberingXAxis() {
+	let innerHtml = '';
+	innerHtml+="<tr>";
+	innerHtml+="<td style='width:5px;height:5px;'></td>";
+	innerHtml+="<td style='width:5px;height:5px;'></td>";
+	innerHtml+="<td style='width:5px;height:5px;'></td>";
+	for(let j=0;j<=maxNumber;j++) {
+		var id = j + "_XAxis";
+		innerHtml+="<td id='"+id+"_copy' style='width:5px;height:5px;'>"+(j+1)+"</td>";
+		innerHtml+="<td id='"+id+"' style='width:5px;height:5px;'>&nbsp;</td>";
+		
+	}
+	innerHtml+="</tr>";
+	return innerHtml;
 }
 
 function drawGraphLines() {
@@ -80,8 +114,8 @@ function drawGraphLines() {
 	var xAxis = new Line(null,null,null,null,'black');
 	console.log(xAxis);
 	xAxis.formXLinePoints();
-	xAxis.draw();
+	xAxis.draw(false);
 	var yAxis = new Line(null,null,null,null,'black');
 	yAxis.formYLinePoints();
-	yAxis.draw();
+	yAxis.draw(true);
 }

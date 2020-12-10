@@ -6,11 +6,11 @@ var Line = function(start,end,intersect,slope,color) {
 	this.color = color;
 	this.points = [];
 	
-	this.draw = function(){
+	this.draw = function(isY){
 		console.log(this.points);
 		for(let i =0;i<this.points.length;i++){
 			var point = this.points[i];
-			point.draw(this.color);
+			point.draw(this.color,isY);
 		}
 	}
 	
