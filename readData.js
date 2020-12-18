@@ -1,7 +1,7 @@
 var textAreaValue;
 var textAreaValueRows;
 var dataSet=[];
-const maxNumber = 100;
+const maxNumber = 50;
 function readDataSet() {
 	textAreaValue = document.getElementById("data_set").value;
 	if(!textAreaValue || textAreaValue=="") {
@@ -52,7 +52,18 @@ function readDataSet() {
 	document.getElementById("dataSetEntry").style.display = "none";
 	initGraph();
 	document.getElementById("graph").style.display = "block";
+	drawDataSet();
 
+}
+
+function drawDataSet(){
+	for(let i=0;i<dataSet.length;i++) {
+		var row = dataSet[i];
+		var x = row.x;
+		var y = row.y;
+		var id = x + "_" + y + "_copy";
+		document.getElementById(id).innerHTML = "<img style='width:8px;height:8px' src='xImage.png'></img>";
+	}
 }
 
 function initGraph() {
@@ -61,7 +72,10 @@ function initGraph() {
 	for(let i=maxNumber;i>=0;i--) {
 		innerHtml+="<tr>";
 		if(i!=0) {
-			innerHtml+="<td id='number_"+i+"' style='width:5px;height:5px;'>"+i+"</td>";
+			if(i>=10)
+				innerHtml+="<td id='number_"+i+"' style='width:5px;height:5px;font-size:10px'>"+i+"</td>";
+			else
+				innerHtml+="<td id='number_"+i+"' style='width:5px;height:5px;font-size:10px'>0"+i+"</td>";
 		}
 		else {
 			innerHtml+="<td id='number_"+i+"' ></td>";
@@ -76,6 +90,10 @@ function initGraph() {
 		innerHtml+="<td style='width:5px;height:5px;'>";
 		if(i!=0) {
 			innerHtml+="<td style='width:5px;height:5px;background-color:black'>";
+			for(let x=0;x<=maxNumber;x++) {
+				innerHtml+="<td style='width:11px;height:12px' id='"+i+"_"+(x+1)+"_space'></td>";
+				innerHtml+="<td style='width:11px;height:12px' id='"+i+"_"+(x+1)+"_space_copy'></td>";
+			}
 		}
 		else {
 			innerHtml+="<td style='width:5px;height:5px;'>";
@@ -86,6 +104,7 @@ function initGraph() {
 	innerHtml+=numberingXAxis();
 	table.innerHTML = innerHtml;
 	drawGraphLines();
+	startLearning();
 }
 
 function numberingXAxis() {
@@ -94,9 +113,12 @@ function numberingXAxis() {
 	innerHtml+="<td style='width:5px;height:5px;'></td>";
 	innerHtml+="<td style='width:5px;height:5px;'></td>";
 	innerHtml+="<td style='width:5px;height:5px;'></td>";
-	for(let j=0;j<=maxNumber;j++) {
+	for(let j=0;j<maxNumber;j++) {
 		var id = j + "_XAxis";
-		innerHtml+="<td id='"+id+"_copy' style='width:5px;height:5px;'>"+(j+1)+"</td>";
+		if(j>=9)
+			innerHtml+="<td id='"+id+"_copy' style='width:5px;height:5px;font-size:10px'>"+(j+1)+"</td>";
+		else
+			innerHtml+="<td id='"+id+"_copy' style='width:5px;height:5px;font-size:10px'>0"+(j+1)+"</td>";
 		innerHtml+="<td id='"+id+"' style='width:5px;height:5px;'>&nbsp;</td>";
 		
 	}
@@ -111,11 +133,16 @@ function drawGraphLines() {
 	//var y-axisStartPoint = new Point(0,0);
 	//var y-axisEndPoint = new Point(100,0);
 	
-	var xAxis = new Line(null,null,null,null,'black');
+	var xAxis = new Line('black',CreateLine(true));
 	console.log(xAxis);
 	xAxis.formXLinePoints();
 	xAxis.draw(false);
-	var yAxis = new Line(null,null,null,null,'black');
+	var yAxis = new Line('black',CreateLine(true));
 	yAxis.formYLinePoints();
 	yAxis.draw(true);
+}
+
+function startLearning() {
+	var startLine = new Line('green',CreateLine(false));
+	startLine.draw();
 }
