@@ -16,7 +16,10 @@ var AlgorithmLine = function (start,end,intersect,slope) {
 		var points = [];
 		var x = this.startPoint.x;
 		while(x <= this.endPoint.x) {
-			var point = new Point(x,(this.slope*x)+this.intersect);
+			let y = (this.slope*x)+this.intersect;
+			if(y > maxNumber)
+				break;
+			var point = new Point(x,y);
 			points.push(point);
 			x++;
 		}
